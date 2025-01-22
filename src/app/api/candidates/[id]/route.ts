@@ -1,4 +1,3 @@
-import { IncomingForm } from 'formidable';
 import { connectDB } from '@/src/lib/db';
 import  Candidate  from '@/src/models/Candidate';
 import Partner from '@/src/models/Partner';

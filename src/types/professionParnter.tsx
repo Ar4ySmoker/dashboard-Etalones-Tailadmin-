@@ -13,6 +13,6 @@ export type ProfessionPartner = {
     langue: string[];
     workHours: string;
     getStart: Date;
-    candidates: string[]; // Здесь типы ObjectId, можно изменить на string для простоты
+    candidates: string[]; 
     interview: string[];
   };

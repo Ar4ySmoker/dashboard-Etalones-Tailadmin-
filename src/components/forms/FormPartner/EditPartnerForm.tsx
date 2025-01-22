@@ -16,7 +16,7 @@ import { X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { CommentEntry } from '../interfaces/FormCandidate.interface';
 import { ProfessionPartner } from '@/src/types/professionParnter';
-import usePartnerData from '@/src/utils/usePartnerData';
+import usePartnerData from '@/src/hooks/usePartnerData';
 
 const EditpartnerForm = ({partner}: any) => {
     const { data: session } = useSession();
@@ -46,18 +46,16 @@ const EditpartnerForm = ({partner}: any) => {
     handleChangeLocation,
     handleChangeSite,
     handleChangeContractType,
-    handleChangeContractPrice
+    handleChangeContractPrice,
+    handleSkillsChange
   } = usePartnerData(partner);
-
   
-  
-  const [professions, setProfessions] = useState<ProfessionPartner[]>(
-    partner?.professions || []  
-  );  
+  const [professions, setProfessions] = useState<ProfessionPartner[]>([]);
   const [inputs, setInputs] = useState<{ [key: string]: string }>({
-    contractType: partner?.contract?.typeC || '',
-    contractPrice: partner?.contract?.sum || '',
+    contractType: '',
+    contractPrice: '',
   });
+  
   const handleInputChange = (inputKey: string, value: string) => {
     setInputs((prevInputs) => ({
       ...prevInputs,
@@ -227,25 +225,24 @@ const EditpartnerForm = ({partner}: any) => {
               </div><div>
               <Label>Viber</Label>
               <Input placeholder="+495651322654" name='viber'
-              value={selectViber || ''}
+              value={selectViber}
               onChange={handleChangeViber}
               />
               </div><div>
               <Label>Whatsapp</Label>
               <Input placeholder="+495651322654" name='whatsapp'
-              value={selectWhatsapp || ''}
-              onChange={handleChangeWhatsapp}
-              />
+              value={selectWhatsapp}
+              onChange={handleChangeWhatsapp}/>
               </div><div>
               <Label>Telegram</Label>
               <Input placeholder="+495651322654" name='telegram'
-              value={selectTelegram || ''}
+              value={selectTelegram}
               onChange={handleChangeTelegram}
               />
               </div><div>
               <Label>Почта</Label>
               <Input placeholder="mail@gmail.com" name='email'
-              value={selectEmail || ''}
+              value={selectEmail}
               onChange={handleChangeEmail}
               />
               </div>
@@ -264,25 +261,25 @@ const EditpartnerForm = ({partner}: any) => {
             <div>
               <Label>Название фирмы</Label>
               <Input placeholder="GMBH gfgtg" name='companyName'
-              value={selectCompanyName || ''}
+              value={selectCompanyName}
               onChange={handleChangeCompanyName}
               />
               </div><div>
               <Label>Номер DE</Label>
               <Input placeholder="DE495651322654" name='numberDE'
-              value={selectNumberDE || ''}
+              value={selectNumberDE}
               onChange={handleChangeNumberDE}
               />
               </div><div>
               <Label>Местоположение</Label>
               <Input placeholder="Дюсельдорф" name='location'
-              value={selectLocation || ''}
+              value={selectLocation}
               onChange={handleChangeLocation}
               />
               </div><div>
               <Label>Сайт</Label>
               <Input placeholder="www.site.com" name='site'
-              value={selectSite || ''}
+              value={selectSite}
               onChange={handleChangeSite}
               />
               </div>
@@ -290,16 +287,16 @@ const EditpartnerForm = ({partner}: any) => {
               name='contractType'
               label="Тип контракта"
               suggestions={suggestionsData.contractType} 
-              value={contractType}
               placeholder="Введите тип контракта"
-              onChange={(value) => handleInputChange('contractType', value)}/>
+              value={contractType}
+              onChange={handleChangeContractType}/>
               <AutocompleteInput 
               name='contractPrice'
               label="Цена контракта"
-              suggestions={suggestionsData.contractPrice}
-              value={contractPrice}
+              suggestions={suggestionsData.contractPrice} 
               placeholder="Введите цену контракта"
-              onChange={(value) => handleInputChange('contractPrice', value)}/>
+              value={contractPrice}
+              onChange={handleChangeContractPrice}/>
             </CardContent>
             <Button variant="outline" className='bg-green-900 text-white w-full' 
               onClick={handleButtonClick} type='button'> 
@@ -425,7 +422,7 @@ const EditpartnerForm = ({partner}: any) => {
               label="Навыки"
               suggestions={suggestionsData.skils}
               placeholder="Укажите набор навыков"
-              onChange={(value) => handleInputPChange(profession.id, 'skills', value)}/>          
+              onChange={handleSkillsChange}/>          
               <div>
               <Label>Опыт работы</Label>
               <ExpirienceSelect 
@@ -441,12 +438,12 @@ const EditpartnerForm = ({partner}: any) => {
               label="Зарплата"
               suggestions={suggestionsData.sallary} 
               placeholder="Зарплата работника"
-              onChange={(value) => handleInputPChange(profession.id, 'salary', value)}/>
+              onChange={handleChangeContractType}/>
                 <AutocompleteInput 
               label="Цена проживания"
               suggestions={suggestionsData.homePrice} 
               placeholder="Стоимость проживания"
-              onChange={(value) => handleInputPChange(profession.id, 'rentPrice', value)}/>
+              onChange={handleChangeContractPrice}/>
                   </div> 
               <div className='grid grid-cols-2 gap-2'>
                 

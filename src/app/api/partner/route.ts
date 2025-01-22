@@ -25,19 +25,66 @@ export const POST = async (request: Request) => {
       const contract = contractRaw ? JSON.parse(contractRaw as string) : {};
       await connectDB();
 
-      const existingPartner = await Partner.findOne({ phone });
-    if (existingPartner) {
-      return new NextResponse(
-        JSON.stringify({
-          error: true,
-          message: `Партнёр с таким номером уже существует ${existingPartner.name}`,
-          metadata: {
-            partnerId: existingPartner._id.toString(), 
-          },
-        }),
-        { status: 400 }
-      );
-    }
+      const existingPhone = await Partner.findOne({ phone });
+if (existingPhone) {
+  return new NextResponse(
+    JSON.stringify({
+      error: true,
+      message: `Партнёр с таким номером уже существует ${existingPhone.name}`,
+      metadata: {
+        partnerId: existingPhone._id.toString(),
+      },
+    }),
+    { status: 400 }
+  );
+}
+
+// Проверка для email
+const existingEmail = await Partner.findOne({ email });
+if (existingEmail) {
+  return new NextResponse(
+    JSON.stringify({
+      error: true,
+      message: `Партнёр с таким email уже существует ${existingEmail.name}`,
+      metadata: {
+        partnerId: existingEmail._id.toString(),
+      },
+    }),
+    { status: 400 }
+  );
+}
+
+// Проверка для номера DE
+const existingNumberDE = await Partner.findOne({ numberDE });
+if (existingNumberDE) {
+  return new NextResponse(
+    JSON.stringify({
+      error: true,
+      message: `Партнёр с таким номером DE уже существует ${existingNumberDE.name}`,
+      metadata: {
+        partnerId: existingNumberDE._id.toString(),
+      },
+    }),
+    { status: 400 }
+  );
+}
+
+const existingCompanyName = await Partner.findOne({ companyName });
+if (existingCompanyName) {
+  return new NextResponse(
+    JSON.stringify({
+      error: true,
+      message: `Партнёр с таким названием компании уже существует ${existingCompanyName.name}`,
+      metadata: {
+        partnerId: existingCompanyName._id.toString(),
+      },
+    }),
+    { status: 400 }
+  );
+}
+
+
+
 
   const body = {
     name,
