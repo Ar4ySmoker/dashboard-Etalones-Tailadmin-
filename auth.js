@@ -14,15 +14,15 @@ const providers = [
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers,
   session: {
-    strategy: "jwt", // Если используете JWT
+    strategy: "jwt", 
   },
   cookies: {
     sessionToken: {
-      name: "next-auth.session-token", // Имя cookie для сессии
+      name: "next-auth.session-token", 
       options: {
-        httpOnly: true, // Запрещает доступ к cookie через JavaScript
-        secure: process.env.NODE_ENV === "production", // Использовать secure cookies только в production
-        maxAge: 24 * 60 * 60, // Время жизни cookie (24 часа)
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === "production", 
+        maxAge: 24 * 60 * 60, 
       },
     },
   },
@@ -61,11 +61,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const manager = await Manager.findOne({ email: profile.email });
 
         if (manager) {
-          // Если менеджер найден, сохраняем его ID и роль в токен
-          return true;  // Разрешаем вход
+          return true;  
         }
 
-        // Если менеджер не найден, возвращаем false (не разрешаем вход)
         return false;
       } catch (error) {
         console.log(error);
@@ -73,15 +71,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
 
-    // Этот колбэк выполняется при генерации токена
     async jwt({ token, user }) {
       if (user && user.email) {
-        // Ищем менеджера по email пользователя
         const manager = await Manager.findOne({ email: user.email }).populate('role');  
         if (manager) {
-          // Проверяем, существует ли роль у менеджера
           if (manager.role && manager.role.name) {
-            token.managerRole = manager.role.name.toString();  // Сохраняем роль менеджера
+            token.managerRole = manager.role.name.toString();  
           } else {
             console.log("Manager role not found or incorrect structure");
           }
@@ -90,7 +85,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.managerRole = manager.role.name.toString();  
         }
 
-        // Добавляем роль пользователя в токен
         if (user.role) {
           token.role = user.role;
         }

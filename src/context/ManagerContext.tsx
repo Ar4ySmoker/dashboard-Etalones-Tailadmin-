@@ -13,8 +13,8 @@ interface ManagerContextType {
 const ManagerContext = createContext<ManagerContextType | undefined>(undefined);
 
 export const ManagerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [manager, setManager] = useState<Manager | null>(null);
   const { data: session } = useSession();
+  const [manager, setManager] = useState<Manager | null>(null);
 
   const managerId = session?.managerId;
 

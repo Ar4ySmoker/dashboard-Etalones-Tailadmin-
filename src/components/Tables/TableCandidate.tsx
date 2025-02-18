@@ -195,7 +195,7 @@
 
 // export default TableCandidate;
 'use client'
-import { useManager } from '@/src/context/ManagerContext'; // Импортируем хук
+import { useManager } from '@/src/context/ManagerContext'; 
 import { Eye, UserCog, UserRoundPlus } from "lucide-react";
 import { Candidate } from '@/src/types/candidate';
 import { useState, useEffect } from 'react';
@@ -203,7 +203,8 @@ import SidebarRight from '../SidebarRight';
 import Loader from "@/src/components/common/Loader";
 
 const TableCandidate = () => {
-  const { manager } = useManager(); // Получаем менеджера из контекста
+  const { manager } = useManager(); 
+  console.log("manager", manager);
   const [loading, setLoading] = useState<boolean>(!manager); // Загружаем, если менеджер ещё не получен
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -272,7 +273,7 @@ const TableCandidate = () => {
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-3 mb-6'>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Мои кандидаты
+           <span>{manager?.candidates?.length || 0}</span> Мои кандидаты!
           </h4>
           <UserRoundPlus color='green' onClick={() => toggleSidebar("addCandidate")} className='cursor-pointer' />
         </div>
